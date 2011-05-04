@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+      package="org.mobilesynergies.epic.sdk"
+      android:versionCode="1"
+      android:versionName="1.0">
+
+
+    <application android:icon="@drawable/icon" android:label="@string/app_name">
+        
+        <activity android:name=".SnippetsActivity"
+			android:label="@string/app_name" android:launchMode="singleTop" android:screenOrientation="portrait">
+			<intent-filter>
+				<!-- the epic action this activity implements -->
+				<action android:name="org.epic.action.ImFeelingLucky"/>
+				<category android:name="android.intent.category.DEFAULT" />
+				<!-- the 'data' element with scheme 'epic' tells the system to announce this activity to be able to perform a specific epic action -->
+				<data android:scheme="epic" />
+			</intent-filter>
+		</activity>
+        
+         <activity android:name=".ParrotActivity"
+			android:label="@string/app_name" android:launchMode="singleTop" android:screenOrientation="portrait">
+			<intent-filter>
+				<!-- the epic action this activity implements -->
+				<action android:name="org.epic.action.TalkBack"/>
+				<category android:name="android.intent.category.DEFAULT" />
+				<!-- the 'data' element with scheme 'epic' tells the system to announce this activity to be able to perform a specific epic action -->
+				<data android:scheme="epic" />
+			</intent-filter>
+		</activity>
+    </application>
+    <!--  we need to include this permission to send messages over the epic network -->
+    <uses-permission android:name="org.mobilesynergies.android.epic.permission.sendmessages"></uses-permission>
+</manifest>
