@@ -22,7 +22,7 @@ import android.util.Log;
  */
 
 public abstract class ApplicationActivity extends Activity {
-	private static String CLASS_TAG = ApplicationActivity.class.getSimpleName(); 
+	private static String LOG_TAG = "EpicSDK"; 
 
 
 	/** 
@@ -43,7 +43,7 @@ public abstract class ApplicationActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		if(!bindService()){
-			Log.e(CLASS_TAG, "couldn't bind to the epic-service");
+			Log.e(LOG_TAG, "couldn't bind to the epic-service");
 		}
 	}
 	
@@ -104,10 +104,14 @@ public abstract class ApplicationActivity extends Activity {
 			// service through an IDL interface, so get a client-side
 			// representation of that from the raw service object.
 
-			mEpicService = (IEpicServiceApplicationInterface) IEpicServiceApplicationInterface.Stub.asInterface(service);
+			mEpicService = IEpicServiceApplicationInterface.Stub.asInterface(service);
 			mIsBound = true;
 			try {
+				Log.d(LOG_TAG, "registerServiceStatusChangeCallback");
 				mEpicService.registerServiceStatusChangeCallback(mServiceStatusChangeCallback);
+				int state = mEpicService.getState();
+				Log.d(LOG_TAG, "The state received in the app activity is "+state);
+
 			} catch (RemoteException e) {
 				e.printStackTrace();
 			}
@@ -117,6 +121,7 @@ public abstract class ApplicationActivity extends Activity {
 		public void onServiceDisconnected(ComponentName className) {
 			// This is called when the connection with the service has been
 			// unexpectedly disconnected -- that is, its process crashed.
+			Log.d(LOG_TAG, "Service disconnected.");
 			mEpicService = null;
 			mIsBound=false;
 			onDisconnected();
@@ -128,6 +133,8 @@ public abstract class ApplicationActivity extends Activity {
 		@Override
 		public void onServiceStatusChanged(int status)
 				throws RemoteException {
+			
+			Log.d(LOG_TAG, "received new state: "+status);
 			if(status==StateObject.EPICNETWORKCONNECTION) {
 				onConnectedToEpicNetwork();
 			} 

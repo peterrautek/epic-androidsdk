@@ -20,13 +20,12 @@ import android.text.ClipboardManager;
  * This activity is a simple example how the epic network can launch applications on your phone, and pass some data to it.
  * It implements the action 'org.epic.action.ImFeelingLucky' (see AndroidManifest.xml file).
  * It extracts the information received from the network and tries to perform some useful action.
- * The message must contain a url field and might contain a title and text field.
+ * The message might contain a url, and a title and a text field.
  * 
  * Currently implemented actions:
  * copy text to clipboard
  * start dialer (if text is a number)
  * start maps (if url is a maps url)
- * start youtube (if url is a youtube url) 
  * start web browser with given url
  * 
  */
@@ -72,26 +71,34 @@ public class SnippetsActivity extends Activity {
 			}
 
 
-			if (title != null && url != null && url.startsWith("http")) {
-				Intent launchIntent = getLaunchIntent(url, text);
+			Intent launchIntent = getLaunchIntent(url, text);
 
-				if (launchIntent != null) {
-					playNotificationSound();
-					startActivity(launchIntent);
-				} else {
-					if (text != null && text.length() > 0) {  // have text
-						generateNotification(text, "copied the selected string to the clipboard", launchIntent);
-					} else {
-						generateNotification(url, title, launchIntent);
-					}
-				}
+			PackageManager pm = getPackageManager();
+			if ((launchIntent!=null)&&(null == launchIntent.resolveActivity(pm))) {
+				launchIntent = null;
 			}
+
+			if (launchIntent != null) {
+				playNotificationSound();
+				startActivity(launchIntent);
+			} 
+			
+			if (text != null && text.length() > 0) {  // have text
+				generateNotification(text, "copied the selected string to the clipboard", launchIntent);
+			} else {
+				generateNotification(url, title, launchIntent);
+			}
+			
+			
 		}
 	}
 	
 	
 
 	private Intent getLaunchIntent(String url, String sel) {
+		if(url==null){
+			url = "";
+		}
 		Intent intent = null;
 		String number = parseTelephoneNumber(sel);
 		if (number != null) {
@@ -122,6 +129,7 @@ public class SnippetsActivity extends Activity {
 				intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
 				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			}
+			
 		}
 		return intent;
 	}

@@ -45,7 +45,7 @@ public class ParrotActivity extends ApplicationActivity{
 	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+		
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		
 		setContentView(R.layout.parrot);
@@ -53,6 +53,8 @@ public class ParrotActivity extends ApplicationActivity{
 		Uri uri = callingIntent.getData();
 		mSessionId = uri.getLastPathSegment();
 		mData = callingIntent.getExtras();
+		
+		super.onCreate(savedInstanceState);
 		
 	}
 
@@ -97,7 +99,7 @@ public class ParrotActivity extends ApplicationActivity{
 		//or get some state information about the phone (think of battery status, up-time, etc.)
 		//or get some sensor measurements (think of camera, gps, compass, light sensor, accellerometer, etc.)
 		//or get some information from a connected device (think of bluetooth connected devices, or the Android IOIO) 
-		
+		Log.d(CLASS_TAG, "sending message");
 		//instead of doing something really fancy - we simply respond (TalkBack) with the data we got from the caller 
 		try {			  
 			mEpicService.sendMessage(EPIC_ACTION, mSessionId, mData);
