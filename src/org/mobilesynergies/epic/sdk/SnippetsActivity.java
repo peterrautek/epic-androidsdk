@@ -20,7 +20,7 @@ import android.text.ClipboardManager;
  * This activity is a simple example how the epic network can launch applications on your phone, and pass some data to it.
  * It implements the action 'org.epic.action.ImFeelingLucky' (see AndroidManifest.xml file).
  * It extracts the information received from the network and tries to perform some useful action.
- * The message might contain a url, and a title and a text field.
+ * The message might contain a up to three parameters of type string: 'url', 'title' and 'text'.
  * 
  * Currently implemented actions:
  * copy text to clipboard
@@ -55,17 +55,17 @@ public class SnippetsActivity extends Activity {
 	public void handleSnippet(Intent intent) {
 		Bundle extras = intent.getExtras();
 		if (extras != null) {
-			String url = (String) extras.get("url");
+			String url = extras.getString("url");
 			if(url!=null){
 				url = url.trim();
 			}
-			String title = (String) extras.get("title");
+			String title = extras.getString("title");
 			if(title!=null){
 				title = title.trim();
 			} else {
 				title = "Snippet";
 			}
-			String text = (String) extras.get("text");
+			String text = extras.getString("text");
 			if(text!=null){
 				text = text.trim();
 			}

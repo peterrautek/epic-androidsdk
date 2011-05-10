@@ -1,22 +1,15 @@
 package org.mobilesynergies.epic.sdk;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Timer;
 import java.util.TimerTask;
 
-
-import android.app.ListActivity;
 import android.content.Intent;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.RemoteException;
-import android.provider.Browser;
 import android.util.Log;
 import android.view.Window;
-import android.widget.ArrayAdapter;
 
 /**
  * The parrot activity implements the org.epic.action.TalkBack action.
